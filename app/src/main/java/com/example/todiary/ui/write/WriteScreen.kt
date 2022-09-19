@@ -1,4 +1,4 @@
-package com.example.todiary.ui.profile
+package com.example.todiary.ui.write
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -8,29 +8,23 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.todiary.ui.theme.Hint_text
+import com.example.todiary.ui.theme.Primary
 
 @Composable
-fun ProfileScreen() {
+fun WriteScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(com.example.todiary.ui.theme.Text)
+            .background(Hint_text)
     ) {
         Text(
-            text = "프로필",
+            text = "작성하기",
             style = MaterialTheme.typography.h1,
             textAlign = TextAlign.Center,
-            color = Color.White,
+            color = Primary,
             modifier = Modifier.align(Alignment.Center)
         )
     }
-}
-
-@Preview
-@Composable
-fun Preview() {
-    ProfileScreen()
 }

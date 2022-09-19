@@ -1,4 +1,4 @@
-package com.example.todiary.ui.profile
+package com.example.todiary.ui.calender
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,16 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.todiary.ui.theme.Primary
 
 @Composable
-fun ProfileScreen() {
+fun CalenderScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(com.example.todiary.ui.theme.Text)
+            .background(Primary)
     ) {
         Text(
-            text = "프로필",
+            text = "캘린더",
             style = MaterialTheme.typography.h1,
             textAlign = TextAlign.Center,
             color = Color.White,
@@ -32,5 +33,5 @@ fun ProfileScreen() {
 @Preview
 @Composable
 fun Preview() {
-    ProfileScreen()
+    CalenderScreen()
 }
