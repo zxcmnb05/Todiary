@@ -23,7 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.todiary.R
 import com.example.todiary.ui.calender.CalenderScreen
 import com.example.todiary.ui.profile.ProfileScreen
-import com.example.todiary.ui.theme.Gray
+import com.example.todiary.ui.theme.LightGray
 import com.example.todiary.ui.theme.Primary
 import com.example.todiary.ui.write.WriteScreen
 
@@ -46,7 +46,7 @@ fun BottomNav(navController: NavController) {
     )
     BottomNavigation(
         backgroundColor = Color.White,
-        contentColor = Gray
+        contentColor = LightGray
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry?.destination?.route
@@ -64,7 +64,7 @@ fun BottomNav(navController: NavController) {
                 },
                 label = { Text(text = stringResource(id = item.title), fontSize = 10.sp) },
                 selectedContentColor = Primary,
-                unselectedContentColor = Gray,
+                unselectedContentColor = LightGray,
                 selected = currentRoute == item.route,
                 alwaysShowLabel = false,
                 onClick = {
@@ -100,7 +100,7 @@ fun NavigationGraph(navController: NavHostController) {
 sealed class NavItem(
     val title: Int, val icon: Int, val route: String
 ) {
-    object Calender : NavItem(R.string.text_calender, R.drawable.ic_calendar, "CALENDER")
+    object Calender : NavItem(R.string.text_calendar, R.drawable.ic_calendar, "CALENDER")
     object Write : NavItem(R.string.text_write, R.drawable.ic_create, "WRITE")
     object Profile : NavItem(R.string.text_profile, R.drawable.ic_person, "PROFILE")
 }

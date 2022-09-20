@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.example.todiary.ui.theme.Hint_text
+import com.example.todiary.ui.theme.LightGray
 import com.example.todiary.ui.theme.Primary
 
 @Composable
@@ -17,7 +17,7 @@ fun WriteScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Hint_text)
+            .background(LightGray)
     ) {
         Text(
             text = "작성하기",

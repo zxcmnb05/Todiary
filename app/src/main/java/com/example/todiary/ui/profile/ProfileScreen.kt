@@ -17,7 +17,7 @@ fun ProfileScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(com.example.todiary.ui.theme.Text)
+            .background(Color.Gray)
     ) {
         Text(
             text = "프로필",
