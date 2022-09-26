@@ -37,7 +37,7 @@ fun TodiaryTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = TodiaryTypography,
         shapes = Shapes,
         content = content
     )
