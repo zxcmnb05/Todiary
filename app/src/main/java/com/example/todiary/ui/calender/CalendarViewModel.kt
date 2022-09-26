@@ -1,5 +1,6 @@
 package com.example.todiary.ui.calender
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
+@SuppressLint("SimpleDateFormat")
 @HiltViewModel
 class CalendarViewModel @Inject constructor() : ViewModel(){
     private val _date: MutableState<String> = mutableStateOf("")
@@ -21,7 +23,7 @@ class CalendarViewModel @Inject constructor() : ViewModel(){
 
     init {
         val current = System.currentTimeMillis()
-        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        val formatter = SimpleDateFormat("yyyy-M-dd")
         val formatted = formatter.format(current)
 
         setDate(formatted)
@@ -29,7 +31,7 @@ class CalendarViewModel @Inject constructor() : ViewModel(){
 
     fun setDate(date: String) {
         _date.value = date
-        var temp = date.split('-')
+        val temp = date.split('-')
         year.value = temp[0]
         month.value = temp[1]
         day.value = temp[2]
