@@ -16,12 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.todiary.R
 import com.example.todiary.ui.calender.CalenderScreen
+import com.example.todiary.ui.diary.DiaryDetailScreen
 import com.example.todiary.ui.profile.ProfileScreen
 import com.example.todiary.ui.theme.LightGray
 import com.example.todiary.ui.theme.Primary
@@ -76,7 +79,6 @@ fun BottomNav(navController: NavController) {
                         restoreState = true
                     }
                 })
-
         }
     }
 }
@@ -85,7 +87,11 @@ fun BottomNav(navController: NavController) {
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = NavItem.Calender.route) {
         composable(NavItem.Calender.route) {
-            CalenderScreen()
+            CalenderScreen(
+                selectDiary = {
+                    navController.navigate(NavItem.Diary.route)
+                }
+            )
         }
         composable(NavItem.Write.route) {
             WriteScreen()
@@ -93,8 +99,13 @@ fun NavigationGraph(navController: NavHostController) {
         composable(NavItem.Profile.route) {
             ProfileScreen()
         }
+        composable(NavItem.Diary.route, arguments = listOf(
+            navArgument("diaryId") { type = NavType.IntType }
+        )){
+            val diaryId = it.arguments?.getInt("diaryId") ?: return@composable
+            DiaryDetailScreen(diaryId = diaryId)
+        }
     }
-
 }
 
 sealed class NavItem(
@@ -103,6 +114,7 @@ sealed class NavItem(
     object Calender : NavItem(R.string.text_calendar, R.drawable.ic_calendar, "CALENDER")
     object Write : NavItem(R.string.text_write, R.drawable.ic_create, "WRITE")
     object Profile : NavItem(R.string.text_profile, R.drawable.ic_person, "PROFILE")
+    object Diary : NavItem(R.string.text_diary, 0, "Diary")
 }
 
 @Preview
