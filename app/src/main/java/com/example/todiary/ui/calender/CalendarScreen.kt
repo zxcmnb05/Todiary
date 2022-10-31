@@ -11,14 +11,21 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.Lifecycle
+import com.example.todiary.util.LifecycleListener
 
 @Composable
-fun CalenderScreen() {
-    val viewModel: CalendarViewModel = viewModel()
+fun CalenderScreen(
+    selectDiary: (Int) -> Unit,
+    viewModel: CalendarViewModel,
+) {
+    LifecycleListener {
+        when (it) {
+            Lifecycle.Event.ON_RESUME -> viewModel.getDiaryByDate()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -28,7 +35,6 @@ fun CalenderScreen() {
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-
                 Calendar(viewModel = viewModel)
                 Column(
                     modifier = Modifier
@@ -40,8 +46,8 @@ fun CalenderScreen() {
                     )
                     LazyColumn() {
                         item {
-                            for (i in 0..3) {
-                                CalendarItem()
+                            viewModel.diaryList.value.forEach {
+                                CalendarItem(selectDiary = selectDiary, diary = it)
                             }
                         }
                     }
@@ -58,12 +64,7 @@ fun Calendar(viewModel: CalendarViewModel) {
     }, update = {
         it.setOnDateChangeListener { calendarView, year, month, day ->
             viewModel.setDate("$year-${month + 1}-$day")
+            viewModel.getDiaryByDate()
         }
     })
-}
-
-@Preview
-@Composable
-fun Preview() {
-    CalenderScreen()
 }
