@@ -10,7 +10,7 @@ import com.example.todiary.data.database.entity.DiaryEntity
 import com.example.todiary.data.repository.DiaryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @SuppressLint("SimpleDateFormat")
@@ -27,24 +27,24 @@ class WriteViewModel @Inject constructor(
     private val _content: MutableState<String> = mutableStateOf("")
     val content: State<String> get() = _content
 
-    val year: MutableState<String> = mutableStateOf("")
-    val month: MutableState<String> = mutableStateOf("")
-    val day: MutableState<String> = mutableStateOf("")
+    val year: MutableState<Int> = mutableStateOf(0)
+    val month: MutableState<Int> = mutableStateOf(0)
+    val day: MutableState<Int> = mutableStateOf(0)
 
     init {
-        val current = System.currentTimeMillis()
-        val formatter = SimpleDateFormat("yyyy-M-dd")
-        val formatted = formatter.format(current)
+        val calendar = Calendar.getInstance()
+        year.value = calendar.get(Calendar.YEAR)
+        month.value = calendar.get(Calendar.MONTH)
+        day.value = calendar.get(Calendar.DAY_OF_MONTH)
 
-        setDate(formatted)
+        setDate(year.value, month.value, day.value)
     }
 
-    fun setDate(date: String) {
-        _date.value = date
-        val temp = date.split('-')
-        year.value = temp[0]
-        month.value = temp[1]
-        day.value = temp[2]
+    fun setDate(year: Int, month: Int, day: Int) {
+        this.year.value = year
+        this.month.value = month
+        this.day.value = day
+        this._date.value = "${this.year.value}-${this.month.value+1}-${this.day.value}"
     }
 
     fun addDiary() = viewModelScope.launch {

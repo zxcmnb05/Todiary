@@ -78,17 +78,16 @@ fun Write(viewModel: WriteViewModel) {
 
 @Composable
 fun ShowDatePicker(context: Context, viewModel: WriteViewModel) {
-
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            viewModel.setDate("$year-$month-$dayOfMonth")
-        }, viewModel.year.value.toInt(), viewModel.month.value.toInt(), viewModel.day.value.toInt()
+            viewModel.setDate(year, month, dayOfMonth)
+        }, viewModel.year.value, viewModel.month.value, viewModel.day.value
     )
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
         Text(
-            text = "${viewModel.year.value}년 ${viewModel.month.value}월 ${viewModel.day.value}일",
+            text = "${viewModel.year.value}년 ${viewModel.month.value+1}월 ${viewModel.day.value}일",
             fontSize = 18.sp,
             modifier = Modifier.clickable {
                 datePickerDialog.show()
