@@ -20,15 +20,25 @@ class ProfileViewModel @Inject constructor(
     private val _diaryList = MutableStateFlow<List<DiaryEntity>>(emptyList())
     val postList = _diaryList.asStateFlow()
 
-    private val _bookmarkList = MutableStateFlow<List<DiaryEntity>>(emptyList())
-    val bookmarkList = _bookmarkList.asStateFlow()
+    private val _likeDiaryList = MutableStateFlow<List<DiaryEntity>>(emptyList())
+    val likeDiaryList = _likeDiaryList.asStateFlow()
 
-    fun getDiaryList() {
+    init {
+        getDiaryList()
+        getLikeDiaryList()
+    }
+
+    private fun getDiaryList() {
         viewModelScope.launch(Dispatchers.IO) {
-            diaryRepository.getAll().distinctUntilChanged().collect() { it ->
+            diaryRepository.getAll().collect {
                 _diaryList.value = it
-                _bookmarkList.value = it.filter { it.postLike == 1 }
             }
+        }
+    }
+
+    private fun getLikeDiaryList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _likeDiaryList.value = diaryRepository.getDiaryLike()
         }
     }
 }

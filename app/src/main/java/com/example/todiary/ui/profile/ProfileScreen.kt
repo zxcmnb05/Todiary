@@ -24,13 +24,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.todiary.R
 import com.example.todiary.ui.theme.LightGray
 
 @Composable
 fun ProfileScreen(
     clickList: () -> Unit,
-    viewModel: ProfileViewModel
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier
@@ -110,7 +111,7 @@ fun WrittenDiary(clickList: () -> Unit, viewModel: ProfileViewModel) {
 @Composable
 fun BookMarkDiary(clickList: () -> Unit, viewModel: ProfileViewModel) {
     val size =
-        if (viewModel.bookmarkList.value.isNotEmpty()) viewModel.bookmarkList.value.size else 0
+        if (viewModel.likeDiaryList.value.isNotEmpty()) viewModel.likeDiaryList.value.size else 0
 
     Column(
         modifier = Modifier
