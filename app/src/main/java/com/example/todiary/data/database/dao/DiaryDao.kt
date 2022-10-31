@@ -1,9 +1,6 @@
 package com.example.todiary.data.database.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.todiary.data.database.entity.DiaryEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,9 +16,18 @@ interface DiaryDao {
     @Query("SELECT * FROM diary_table WHERE diaryIdx = :idx")
     suspend fun getDiaryByIdx(idx: Int): DiaryEntity
 
+    @Query("SELECT * FROM diary_table WHERE post_like = 1")
+    suspend fun getDiaryLike(): List<DiaryEntity>
+
+    @Query("UPDATE DIARY_TABLE SET post_like = :like WHERE diaryIdx = :idx")
+    suspend fun updateLike(like: Boolean, idx: Int)
+
+    @Update
+    suspend fun update(diary: DiaryEntity)
+
     @Delete
-    suspend fun delete(post: DiaryEntity)
+    suspend fun delete(diary: DiaryEntity)
 
     @Insert
-    suspend fun insert(post: DiaryEntity)
+    suspend fun insert(diary: DiaryEntity)
 }

@@ -19,5 +19,5 @@ data class DiaryEntity (
     val diaryDate: String,
 
     @ColumnInfo(name = "post_like")
-    val postLike: Boolean = false
+    val diaryLike: Boolean = false
 )

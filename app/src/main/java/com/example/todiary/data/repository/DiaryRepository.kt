@@ -16,6 +16,12 @@ class DiaryRepository @Inject constructor(private val diaryDao: DiaryDao) {
 
     suspend fun getDiaryByIdx(idx: Int) = diaryDao.getDiaryByIdx(idx)
 
+    suspend fun getDiaryLike() = diaryDao.getDiaryLike()
+
+    suspend fun updateLike(like: Boolean, idx: Int) = diaryDao.updateLike(like, idx)
+
+    suspend fun update(diary: DiaryEntity) = diaryDao.update(diary)
+
     suspend fun delete(diary: DiaryEntity) = diaryDao.delete(diary)
 
     suspend fun addDiary(diary: DiaryEntity) = diaryDao.insert(diary)
