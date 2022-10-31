@@ -1,18 +1,23 @@
 package com.example.todiary.ui.write
 
 import android.annotation.SuppressLint
-import android.icu.text.CaseMap
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.todiary.data.database.entity.DiaryEntity
+import com.example.todiary.data.repository.DiaryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 @SuppressLint("SimpleDateFormat")
 @HiltViewModel
-class WriteViewModel @Inject constructor() : ViewModel() {
+class WriteViewModel @Inject constructor(
+    private val diaryRepository: DiaryRepository
+) : ViewModel() {
     private val _date: MutableState<String> = mutableStateOf("")
     val date: State<String> get() = _date
 
@@ -40,6 +45,16 @@ class WriteViewModel @Inject constructor() : ViewModel() {
         year.value = temp[0]
         month.value = temp[1]
         day.value = temp[2]
+    }
+
+    fun addDiary() = viewModelScope.launch {
+        diaryRepository.addDiary(
+            diary = DiaryEntity(
+                diaryTitle = title.value,
+                diaryContent = content.value,
+                diaryDate = date.value
+            )
+        )
     }
 
     fun setTitle(title: String) {

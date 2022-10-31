@@ -3,31 +3,32 @@ package com.example.todiary.ui.write
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.todiary.R
 import com.example.todiary.ui.theme.Primary
 
 @Composable
-fun WriteScreen() {
-    val viewModel: WriteViewModel = viewModel()
+fun WriteScreen(viewModel: WriteViewModel = hiltViewModel(), navController: NavController) {
     val context = LocalContext.current
 
     Column(
@@ -35,20 +36,29 @@ fun WriteScreen() {
             .fillMaxSize()
             .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
-        TopAppBar()
+        TopAppBar(viewModel, "일기작성", navController)
         ShowDatePicker(context = context, viewModel = viewModel)
         Write(viewModel = viewModel)
     }
 }
 
 @Composable
-fun TopAppBar() {
+fun TopAppBar(viewModel: WriteViewModel, text: String, navController: NavController) {
+    val context = LocalContext.current
+
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = "일기작성", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+        Text(text = text, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
         Box(modifier = Modifier
             .clip(CircleShape)
             .clickable {
-                // 작성 버튼
+                if (viewModel.title.value.isNotEmpty() && viewModel.content.value.isNotEmpty() && viewModel.date.value.isNotEmpty()) {
+                    viewModel.addDiary()
+                    navController.popBackStack()
+                } else {
+                    Toast
+                        .makeText(context, "게시물을 작성해 주세요", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_check),
