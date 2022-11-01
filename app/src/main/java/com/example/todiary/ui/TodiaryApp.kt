@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -25,6 +26,7 @@ import androidx.navigation.navArgument
 import com.example.todiary.R
 import com.example.todiary.ui.calender.CalenderScreen
 import com.example.todiary.ui.diary.DiaryDetailScreen
+import com.example.todiary.ui.list.ListOfDiaryScreen
 import com.example.todiary.ui.profile.ProfileScreen
 import com.example.todiary.ui.theme.LightGray
 import com.example.todiary.ui.theme.Primary
@@ -89,21 +91,36 @@ fun NavigationGraph(navController: NavHostController) {
         composable(NavItem.Calender.route) {
             CalenderScreen(
                 selectDiary = {
-                    navController.navigate(NavItem.Diary.route)
-                }
+                    navController.navigate("${NavItem.Diary.route}/$it")
+                }, viewModel = hiltViewModel()
             )
         }
         composable(NavItem.Write.route) {
-            WriteScreen()
+            WriteScreen(navController = navController)
         }
         composable(NavItem.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(clickList = {
+                navController.navigate(NavItem.ListOfDiary.route)
+            })
         }
-        composable(NavItem.Diary.route, arguments = listOf(
+        composable("${NavItem.Diary.route}/{diaryId}", arguments = listOf(
             navArgument("diaryId") { type = NavType.IntType }
-        )){
+        )) {
             val diaryId = it.arguments?.getInt("diaryId") ?: return@composable
-            DiaryDetailScreen(diaryId = diaryId)
+            DiaryDetailScreen(diaryId = diaryId, navController = navController, clickUpdate = {
+                navController.navigate("${NavItem.Update.route}/$it")
+            })
+        }
+        composable(NavItem.ListOfDiary.route) {
+            ListOfDiaryScreen(selectDiary = {
+                navController.navigate("${NavItem.Diary.route}/$it")
+            })
+        }
+        composable("${NavItem.Update.route}/{diaryId}", arguments = listOf(
+            navArgument("diaryId") { type = NavType.IntType }
+        )) {
+            val diaryId = it.arguments?.getInt("diaryId") ?: return@composable
+            UpdateScreen(diaryId = diaryId, navController = navController)
         }
     }
 }
@@ -115,6 +132,8 @@ sealed class NavItem(
     object Write : NavItem(R.string.text_write, R.drawable.ic_create, "WRITE")
     object Profile : NavItem(R.string.text_profile, R.drawable.ic_person, "PROFILE")
     object Diary : NavItem(R.string.text_diary, 0, "Diary")
+    object Update : NavItem(R.string.text_update, 0, "Update")
+    object ListOfDiary : NavItem(R.string.text_diary_list, 0, "DiaryList")
 }
 
 @Preview
